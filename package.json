@@ -1,0 +1,52 @@
+{
+  "name": "click-to-css",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "exports": "./src/index.js",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/index.js",
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "vite": "8.3.2",
+    "postcss": "8.5.28"
+  },
+  "files": [
+    "src",
+    "docs",
+    "examples",
+    "README.md",
+    "README.zh-CN.md",
+    "CONTRIBUTING.md",
+    "AGENTS.md",
+    "test",
+    "index.html",
+    "style.css",
+    "vite.config.js",
+    "LICENSE"
+  ],
+  "description": "A local visual CSS editor for static pages: click an element, preview styles, save to real source files, edit design tokens and undo with conflict protection. 本地点选网页元素、预览样式、保存回 CSS 源码，支持设计变量、撤销和冲突保护。",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/workstonedai-collab/click-to-css.git"
+  },
+  "bugs": {
+    "url": "https://github.com/workstonedai-collab/click-to-css/issues"
+  },
+  "homepage": "https://github.com/workstonedai-collab/click-to-css#readme",
+  "keywords": [
+    "css",
+    "visual-editor",
+    "vite-plugin",
+    "developer-tools",
+    "design-tokens",
+    "local-first"
+  ]
+}

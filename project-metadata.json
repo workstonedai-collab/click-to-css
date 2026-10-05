@@ -1,0 +1,15 @@
+{
+  "repository": "click-to-css",
+  "title": "Click-to-CSS · 点选式网页样式编辑器",
+  "description": "A local visual CSS editor for static pages: click an element, preview styles, save to real source files, edit design tokens and undo with conflict protection. 本地点选网页元素、预览样式、保存回 CSS 源码，支持设计变量、撤销和冲突保护。",
+  "license": "MIT",
+  "visibility": "public",
+  "topics": [
+    "css",
+    "visual-editor",
+    "vite-plugin",
+    "developer-tools",
+    "design-tokens",
+    "local-first"
+  ]
+}

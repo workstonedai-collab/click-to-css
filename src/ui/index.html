@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Click-to-CSS</title>
+    <link rel="stylesheet" href="/__click_to_css/style.css" />
+  </head>
+  <body>
+    <header>
+      <strong>Click-to-CSS</strong
+      ><span data-i18n="subtitle">Point, adjust, save to source.</span
+      ><select id="page" aria-label="Page"></select
+      ><button id="mode" data-i18n="interact">Interact with page</button
+      ><button id="undo" data-i18n="undo">Undo</button
+      ><button id="language">中文</button>
+    </header>
+    <main>
+      <iframe id="preview" title="Page preview"></iframe>
+      <aside>
+        <h1 data-i18n="heading">Edit the real CSS</h1>
+        <p data-i18n="hint">
+          Click an element. Choose a rule, change a property, then preview or
+          save.
+        </p>
+        <label
+          ><span data-i18n="rule">Source rule</span
+          ><select id="rule"></select></label
+        ><label
+          ><span data-i18n="property">Property</span
+          ><select id="property"></select></label
+        ><label
+          ><span data-i18n="value">Value</span
+          ><input id="value" placeholder="24px"
+        /></label>
+        <div>
+          <button id="apply" data-i18n="preview">Preview</button
+          ><button id="save" class="primary" data-i18n="save">Save CSS</button>
+        </div>
+        <h2 data-i18n="tokens">Design tokens</h2>
+        <div id="tokens"></div>
+        <h2 data-i18n="diff">Latest source change</h2>
+        <pre id="diff"></pre>
+        <p id="status" role="status" aria-live="polite"></p>
+        <small data-i18n="boundary"
+          >Local development only · ordinary CSS files · Git stays under your
+          control</small
+        >
+      </aside>
+    </main>
+    <script type="module" src="/__click_to_css/app.js"></script>
+  </body>
+</html>

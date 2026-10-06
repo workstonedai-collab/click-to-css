@@ -1,0 +1,34 @@
+1
+00:00:00,000 --> 00:00:03,520
+Click-to-CSS · Local HTML/CSS editor
+本地静态页面：点选、调整、保存回源码
+
+2
+00:00:03,520 --> 00:00:07,420
+Select the heading and its h1 source rule
+点选标题，选择 h1 源规则与 font-size
+
+3
+00:00:07,420 --> 00:00:12,270
+Preview 46px · source file remains unchanged
+预览 46px；此时源文件尚未修改
+
+4
+00:00:12,270 --> 00:00:17,470
+Save CSS · the source now contains 46px
+保存 CSS；真实源文件已变为 46px
+
+5
+00:00:17,470 --> 00:00:22,140
+Inspect the source change before committing
+查看源码变化；由你决定是否提交
+
+6
+00:00:22,140 --> 00:00:26,710
+Undo · the original source is restored
+撤销；源文件完整恢复到原版
+
+7
+00:00:26,710 --> 00:00:29,650
+English + 中文 · no account or API key needed
+支持双语；无需账号或 API 密钥

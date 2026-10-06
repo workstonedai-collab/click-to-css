@@ -10,6 +10,14 @@ Click-to-CSS 是一个本地 Vite 插件，适合处理页面最后一轮精调�
 
 它适合开发者、使用 HTML/CSS 的设计人员，以及希望微调 Agent 生成页面的人。无需账号、模型 API 或云端服务。
 
+## 先看实际操作
+
+![真实点选、保存与撤销，2 倍速预览](docs/demo.gif)
+
+[观看完整约 30 秒视频](docs/demo.mp4) · [逐步操作教程](docs/walkthrough.zh-CN.md) · [English guide](docs/walkthrough.en.md)
+
+录屏使用自带静态页面：点选标题、预览 46px、保存回真实 CSS、查看源码并撤销。无需账号或 API 密钥。
+
 ![本地编辑器与原创示例页面](docs/editor.png)
 
 ## 阅读导航

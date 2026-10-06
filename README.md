@@ -10,6 +10,14 @@ Click-to-CSS is a local Vite plugin for the last mile of styling: a heading need
 
 It is useful for developers, designers working on their own HTML/CSS, and people refining pages created with a coding agent. No account, model API or cloud service is needed.
 
+## See it in action
+
+![Real edit, save and undo · compact 2× preview](docs/demo.gif)
+
+[Watch the full 30-second video](docs/demo.mp4) · [Step-by-step walkthrough](docs/walkthrough.en.md) · [中文教程](docs/walkthrough.zh-CN.md)
+
+The recording shows the included static page: select a heading, preview 46px, save to real CSS, inspect the source and undo. No account or API key is needed.
+
 ![The local editor with a synthetic example page](docs/editor.png)
 
 ## Contents

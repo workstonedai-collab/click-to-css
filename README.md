@@ -10,6 +10,8 @@ Click-to-CSS is a local Vite plugin for the last mile of styling: a heading need
 
 It is useful for developers, designers working on their own HTML/CSS, and people refining pages created with a coding agent. No account, model API or cloud service is needed.
 
+For static HTML and ordinary external CSS. React/Vue source mapping, Tailwind and CSS-in-JS are not supported yet.
+
 ## See it in action
 
 ![Real edit, save and undo · compact 2× preview](docs/demo.gif)
@@ -19,27 +21,6 @@ It is useful for developers, designers working on their own HTML/CSS, and people
 The recording shows the included static page: select a heading, preview 46px, save to real CSS, inspect the source and undo. No account or API key is needed.
 
 ![The local editor with a synthetic example page](docs/editor.png)
-
-## Contents
-
-- [When it is useful](#when-it-is-useful)
-- [Try the included page](#try-the-included-page)
-- [What is included?](#what-is-included)
-- [Use it with your own static page](#use-it-with-your-own-static-page)
-- [Connect an existing folder without moving its source](#connect-an-existing-folder-without-moving-its-source)
-- [Troubleshooting](#troubleshooting)
-- [Scope and current limits](#scope-and-current-limits)
-- [Verification and development](#verification-and-development)
-- [Let your coding agent help](#let-your-coding-agent-help)
-- [Contributing and license](#contributing-and-license)
-
-## When it is useful
-
-- **Finish an agent-generated landing page:** adjust headings, card spacing and colors while looking at the actual page.
-- **Tune a small static site:** inspect the matching CSS rule instead of guessing which selector controls an element.
-- **Review a design change with a developer:** save ordinary source changes that can be inspected in Git and carried into the normal build.
-
-The working loop is **select → choose source rule → preview → save → review**. Previewing affects the selected element temporarily; saving updates its shared CSS rule and can affect other matching elements.
 
 ## Try the included page
 
@@ -61,6 +42,27 @@ Open the local URL printed by Vite and add `/__click_to_css` (normally `http://1
 5. Click **Undo** to restore it. Review changes in your preferred Git client.
 
 Switch **中文 / English** in the toolbar. **Interact with page** temporarily lets clicks reach links and controls so you can reveal tabs or dialogs before selecting their elements.
+
+## Contents
+
+- [When it is useful](#when-it-is-useful)
+- [Try the included page](#try-the-included-page)
+- [What is included?](#what-is-included)
+- [Use it with your own static page](#use-it-with-your-own-static-page)
+- [Connect an existing folder without moving its source](#connect-an-existing-folder-without-moving-its-source)
+- [Troubleshooting](#troubleshooting)
+- [Scope and current limits](#scope-and-current-limits)
+- [Verification and development](#verification-and-development)
+- [Let your coding agent help](#let-your-coding-agent-help)
+- [Contributing and license](#contributing-and-license)
+
+## When it is useful
+
+- **Finish an agent-generated landing page:** adjust headings, card spacing and colors while looking at the actual page.
+- **Tune a small static site:** inspect the matching CSS rule instead of guessing which selector controls an element.
+- **Review a design change with a developer:** save ordinary source changes that can be inspected in Git and carried into the normal build.
+
+The working loop is **select → choose source rule → preview → save → review**. Previewing affects the selected element temporarily; saving updates its shared CSS rule and can affect other matching elements.
 
 ## What is included?
 

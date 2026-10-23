@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import postcss from "postcss";
+import { instrumentSource, publicTargets, editComponent } from "./components.js";
 
 const PROPERTIES = new Set(
   "font-family font-size font-weight line-height letter-spacing text-align color width height min-width max-width display flex-direction justify-content align-items grid-template-columns grid-template-rows gap margin-top margin-right margin-bottom margin-left padding-top padding-right padding-bottom padding-left background-color border-width border-style border-color border-radius box-shadow".split(
@@ -139,6 +140,8 @@ export function clickToCss(options = {}) {
   const pages = options.pages || [
     { file: "index.html", label: "Home", styles: ["style.css"] },
   ];
+  const sources = options.sources || [];
+  for (const name of sources) if (!/\.(jsx|tsx|vue)$/.test(relativeName(name))) throw new Error("Component sources must be JSX, TSX or Vue files");
   const tokenFile = options.tokenFile || null,
     tokenPrefix = options.tokenPrefix || "--";
   for (const p of pages) {
@@ -146,7 +149,7 @@ export function clickToCss(options = {}) {
     if (
       !p.file.endsWith(".html") ||
       !Array.isArray(p.styles) ||
-      !p.styles.length
+      (!p.styles.length && !sources.length)
     )
       throw new Error("Each page needs an HTML file and CSS files");
     for (const s of p.styles)
@@ -156,14 +159,26 @@ export function clickToCss(options = {}) {
   if (tokenFile && !relativeName(tokenFile).endsWith(".css"))
     throw new Error("Token file must be CSS");
   const allowed = new Set([
+    ...sources,
     ...pages.flatMap((p) => p.styles),
     ...(tokenFile ? [tokenFile] : []),
   ]);
   const undo = [];
-  let chain = Promise.resolve();
+  let chain = Promise.resolve(), projectRoot;
   return {
     name: "click-to-css",
     apply: "serve",
+    enforce: "pre",
+    configResolved(config) { projectRoot = config.root; },
+    async transform(code, id) {
+      if (id.includes("?") || !projectRoot) return null;
+      const name = path.relative(projectRoot, id).split(path.sep).join("/");
+      if (!sources.includes(name)) return null;
+      const realRoot = await fs.realpath(projectRoot), realFile = await fs.realpath(id);
+      if (!inside(realRoot,realFile)) throw new Error("Symlink escapes project");
+      if (code !== await fs.readFile(realFile,"utf8")) throw new Error("Run click-to-css before other component transforms");
+      return instrumentSource(code,name);
+    },
     async configureServer(server) {
       const root = await fs.realpath(server.config.root);
       async function fileFor(name) {
@@ -226,9 +241,10 @@ export function clickToCss(options = {}) {
             return;
           }
           if (req.method === "GET" && pathname === PREFIX + "/state") {
-            const css = {};
+            const css = {}, components = {};
             for (const name of allowed)
               css[name] = await fs.readFile(await fileFor(name), "utf8");
+            for (const name of sources) components[name] = publicTargets(css[name],name);
             const tokens = [];
             if (tokenFile)
               postcss.parse(css[tokenFile]).walkDecls((d) => {
@@ -237,6 +253,7 @@ export function clickToCss(options = {}) {
               });
             return json(res, 200, {
               pages,
+              components,
               tokenFile,
               tokens,
               properties: [...PROPERTIES],
@@ -247,6 +264,17 @@ export function clickToCss(options = {}) {
           if (req.method !== "POST")
             return json(res, 405, { error: "Method not supported" });
           const payload = await body(req);
+          if (pathname === PREFIX + "/component") {
+            return await serial(async () => {
+              if (!sources.includes(payload.file) || !pages.some(p => p.file === payload.page)) throw new Error("Component source is not allowed");
+              const file = await fileFor(payload.file), before = await fs.readFile(file,"utf8");
+              if (payload.before !== before) return json(res,409,{error:"Source changed; refresh and select again"});
+              const after = editComponent(before,payload.file,payload,editRule,validateValue,PROPERTIES);
+              await atomicWrite(file,after);
+              undo.push({name:payload.file,before,after}); if (undo.length>100) undo.shift();
+              json(res,200,{saved:payload.file,before,after});
+            });
+          }
           if (pathname === PREFIX + "/save") {
             return await serial(async () => {
               if (

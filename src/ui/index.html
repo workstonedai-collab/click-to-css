@@ -23,6 +23,7 @@
           Click an element. Choose a rule, change a property, then preview or
           save.
         </p>
+        <p id="source"></p>
         <label
           ><span data-i18n="rule">Source rule</span
           ><select id="rule"></select></label
@@ -35,7 +36,7 @@
         /></label>
         <div>
           <button id="apply" data-i18n="preview">Preview</button
-          ><button id="save" class="primary" data-i18n="save">Save CSS</button>
+          ><button id="save" class="primary" data-i18n="save">Save source</button>
         </div>
         <h2 data-i18n="tokens">Design tokens</h2>
         <div id="tokens"></div>
@@ -43,7 +44,7 @@
         <pre id="diff"></pre>
         <p id="status" role="status" aria-live="polite"></p>
         <small data-i18n="boundary"
-          >Local development only · ordinary CSS files · Git stays under your
+          >Local development only · CSS and configured components · Git stays under your
           control</small
         >
       </aside>

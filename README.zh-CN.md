@@ -2,7 +2,7 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-[![CI](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml/badge.svg)](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml) · [MIT](LICENSE) · Node.js 22.12+
+[![CI](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml/badge.svg)](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml) · [MIT](LICENSE) · Node.js 22.18+
 
 **在网页上点选元素、调整样式，把修改保存回真实 CSS 源文件。**
 
@@ -24,7 +24,7 @@ Click-to-CSS 是一个本地 Vite 插件，适合处理页面最后一轮精调�
 
 ## 先试用示例
 
-需要 **Node.js 22.12 或更新版本**。在下载后的项目目录运行：
+需要 **Node.js 22.18 或更新版本**。在下载后的项目目录运行：
 
 ```sh
 git clone https://github.com/workstonedai-collab/click-to-css.git
@@ -75,6 +75,7 @@ npm run dev
 | 预览 | 只对当前元素应用临时样式，不写文件 |
 | 保存 | 通过 PostCSS 修改指定源规则中的声明 |
 | 撤销 | 仅在文件未被外部改动时恢复上一次内容 |
+| 组件源码 | JSX/TSX 与 Vue 定位；字面量类名、静态内联样式、Vue scoped CSS 和静态 styled 模板 |
 | 冲突保护 | 如果源文件比读取快照更新，拒绝覆盖 |
 
 撤销历史属于当前开发服务会话，最多保留 100 次；长期历史由 Git 管理。保存共享选择器会影响多个元素，因此应确认选中的源规则。
@@ -153,7 +154,7 @@ export default defineConfig({
 
 ## 首版范围
 
-- 面向**静态 HTML 和普通外部 CSS**；尚未实现 React/Vue 组件源码映射、Tailwind 类名、CSS-in-JS 或远程样式表编辑。
+- 继续支持静态 HTML 和外部 CSS；新增 [React/Vue 组件定位与编辑](docs/components.md)，可写回字面量 Tailwind 类名、静态 React 内联样式、Vue scoped CSS 和静态 styled-components/Emotion 模板。动态表达式和远程样式表暂不编辑。
 - CSS import、虚拟样式和复杂嵌套可能无法直接映射到源规则。保持可编辑文件简单，并核对选中规则。
 - 写入接口只在 Vite 开发模式开启，限制本机回环访问及同源写入；拒绝通过符号链接逃出项目的文件。
 - 用于可信本地项目。其他本机进程仍可修改同一文件，不宜作为在线多人编辑服务。
@@ -177,3 +178,5 @@ npm run build
 ## 贡献与许可
 
 欢迎提交小型可复现示例，见 [CONTRIBUTING.md](CONTRIBUTING.md)。项目代码使用 [MIT](LICENSE)。第三方依赖及数据保留自身条款。
+
+[React/Vue、Tailwind、CSS-in-JS 示例与边界](docs/components.md)：`npm run dev:frameworks`。

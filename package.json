@@ -5,18 +5,25 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=22.12"
+    "node": ">=22.18"
   },
   "exports": "./src/index.js",
   "scripts": {
     "test": "node --test",
     "check": "node --check src/index.js",
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build"
+    "build": "vite build",
+    "dev:frameworks": "vite --config examples/frameworks/vite.config.js --host 127.0.0.1",
+    "build:frameworks": "vite build --config examples/frameworks/vite.config.js"
   },
   "dependencies": {
     "vite": "8.3.5",
-    "postcss": "8.5.28"
+    "postcss": "8.5.28",
+    "@babel/parser": "8.0.7",
+    "@babel/traverse": "8.0.0",
+    "@vue/compiler-dom": "3.5.44",
+    "@vue/compiler-sfc": "3.5.44",
+    "magic-string": "1.4.3"
   },
   "files": [
     "src",
@@ -32,7 +39,7 @@
     "vite.config.js",
     "LICENSE"
   ],
-  "description": "A local visual CSS editor for static pages: click an element, preview styles, save to real source files, edit design tokens and undo with conflict protection. 本地点选网页元素、预览样式、保存回 CSS 源码，支持设计变量、撤销和冲突保护。",
+  "description": "Local visual style editing for CSS, JSX/TSX and Vue: source mapping, literal Tailwind classes, static CSS-in-JS, conflict protection and undo.",
   "repository": {
     "type": "git",
     "url": "https://github.com/workstonedai-collab/click-to-css.git"
@@ -48,5 +55,15 @@
     "developer-tools",
     "design-tokens",
     "local-first"
-  ]
+  ],
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "@vitejs/plugin-vue": "6.0.10",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "styled-components": "6.6.0",
+    "tailwindcss": "4.3.3",
+    "vue": "3.5.44"
+  }
 }

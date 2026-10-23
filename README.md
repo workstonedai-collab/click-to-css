@@ -2,7 +2,7 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 
-[![CI](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml/badge.svg)](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml) · [MIT](LICENSE) · Node.js 22.12+
+[![CI](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml/badge.svg)](https://github.com/workstonedai-collab/click-to-css/actions/workflows/ci.yml) · [MIT](LICENSE) · Node.js 22.18+
 
 **Point at an element, adjust its style, and save the change back to your CSS source.**
 
@@ -24,7 +24,7 @@ The recording shows the included static page: select a heading, preview 46px, sa
 
 ## Try the included page
 
-Requires Node.js **22.12 or newer**. In the downloaded project folder:
+Requires Node.js **22.18 or newer**. In the downloaded project folder:
 
 ```sh
 git clone https://github.com/workstonedai-collab/click-to-css.git
@@ -75,6 +75,7 @@ The working loop is **select → choose source rule → preview → save → rev
 | Preview | Applies an element-level preview without writing files |
 | Save | Uses PostCSS to update the selected source declaration |
 | Undo | Restores the previous source only if it has not changed outside the editor |
+| Component source | JSX/TSX and Vue mapping; literal classes, static inline styles, Vue scoped CSS and static styled templates |
 | Change protection | Rejects saving over a newer source snapshot |
 
 Undo history lasts for the current development-server session and retains up to 100 edits. Git provides longer-term history. A saved shared selector can affect more than one element; the selected source rule is the unit of change.
@@ -153,7 +154,7 @@ After saving, review your site's changes, for example with `git -C ../my-page di
 
 ## Scope and current limits
 
-- This release targets **static HTML and ordinary external CSS**. React/Vue component source mapping, Tailwind classes, CSS-in-JS and remote stylesheets are not implemented.
+- Static HTML/external CSS remains supported. [Component editing](docs/components.md#english) adds JSX/TSX and Vue source mapping, literal Tailwind class lists, static React inline styles and flat styled-components/Emotion templates. Dynamic expressions and remote stylesheets remain outside the editable scope.
 - CSS imports, generated/virtual styles and complex CSS nesting may not map directly to a source rule. Keep editable files simple and inspect the selected rule.
 - The API is enabled only by Vite's `serve` mode and requires loopback requests; writes require the same origin. Files escaping the project through a symlink are rejected.
 - Run on a trusted local project. Other processes on your machine can still edit those files. Do not expose the editor as an online multi-user service.
@@ -177,3 +178,5 @@ Ask your agent to inspect your static page, list its HTML and external CSS files
 ## Contributing and license
 
 Small reproducible examples are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Project code is licensed under [MIT](LICENSE). Third-party dependencies and data retain their own terms.
+
+[React/Vue + Tailwind + CSS-in-JS demo and limits](docs/components.md#english): `npm run dev:frameworks`.

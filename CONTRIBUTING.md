@@ -6,7 +6,7 @@ Thanks for helping make this small tool easier to use. Please start with a focus
 
 ## Local development / 本地开发
 
-Requires Node.js 22.12 or later. / 需要 Node.js 22.12 或以上。
+Requires Node.js 22.18 or later. / 需要 Node.js 22.18 或以上。
 
 ```sh
 npm ci

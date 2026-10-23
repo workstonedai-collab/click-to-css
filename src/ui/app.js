@@ -16,12 +16,12 @@ const zh = {
   hint: "点选元素，选择规则和属性，然后预览或保存。",
   rule: "源文件规则",
   property: "属性",
-  value: "属性值",
+  value: "属性值 / 完整类名",
   preview: "预览",
-  save: "保存 CSS",
+  save: "保存源码",
   tokens: "设计变量",
   diff: "最近一次源码变化",
-  boundary: "仅用于本地开发 · 普通 CSS 文件 · Git 由你控制",
+  boundary: "仅用于本地开发 · CSS 与已配置组件 · Git 由你控制",
 };
 const english = Object.fromEntries(
   [...document.querySelectorAll("[data-i18n]")].map((e) => [
@@ -104,6 +104,13 @@ function load() {
 }
 function collect(element) {
   const out = [];
+  const id = element.getAttribute('data-click-to-css-source');
+  const component = Object.values(state.components || {}).find(c => c.elements.some(e => e.id === id));
+  if (component) for (const target of component.targets) {
+    let matches = target.elementId === id;
+    if (target.mode === 'vue-css') { try { matches = element.matches(target.selector); } catch {} }
+    if (matches) out.push({...target, component:true, target:target.id});
+  }
   for (const sheet of frame.contentDocument.styleSheets) {
     if (!sheet.href) continue;
     const file = decodeURIComponent(new URL(sheet.href).pathname.slice(1));
@@ -152,6 +159,9 @@ function collect(element) {
   return out;
 }
 function showValue() {
+  const rule = rules[Number($("#rule").value)];
+  $("#property").disabled = rule?.mode === 'classes';
+  if (rule?.mode === 'classes') { $("#value").value = rule.value; return; }
   if (selected)
     $("#value").value = frame.contentWindow
       .getComputedStyle(selected)
@@ -169,16 +179,19 @@ frame.onload = () => {
       if (selected) selected.style.outline = "";
       selected = e.target;
       rules = collect(selected);
+      const sourceId = selected.getAttribute('data-click-to-css-source');
+      const mapped = Object.values(state.components || {}).flatMap(c=>c.elements).find(e=>e.id===sourceId);
+      $('#source').textContent = mapped ? `${mapped.file}:${mapped.line} · <${mapped.tag}>` : '';
       selected.style.outline = "2px solid #2a9474";
       $("#rule").replaceChildren();
       rules.forEach((r, i) =>
         option(
           $("#rule"),
           i,
-          r.file + " · " + r.selector + " [" + r.occurrence + "]" + r.context,
+          r.component ? `${r.file}:${r.line} · ${r.mode} ${r.selector || r.tag || ""}` : r.file + " · " + r.selector + " [" + r.occurrence + "]" + r.context,
         ),
       );
-      $("#rule").value = rules.length - 1;
+      $("#rule").value = 0;
       showValue();
       message(
         rules.length
@@ -186,8 +199,8 @@ frame.onload = () => {
             ? "已选择元素"
             : "Element selected"
           : lang === "zh"
-            ? "该元素没有可编辑的外部 CSS 规则"
-            : "No editable external CSS rule for this element",
+            ? "没有可编辑的静态样式；动态表达式保持不变"
+            : "No editable static style; dynamic expressions are left unchanged",
       );
     },
     true,
@@ -202,19 +215,23 @@ async function run(fn) {
 }
 $("#page").onchange = load;
 $("#property").onchange = showValue;
+$("#rule").onchange = showValue;
 $("#apply").onclick = () =>
   run(() => {
     if (!selected)
       throw new Error(lang === "zh" ? "先选择元素" : "Select an element first");
+    const rule = rules[Number($("#rule").value)];
+    if (rule?.mode === 'classes') throw new Error(lang === 'zh' ? '保存完整类名后由 Tailwind 重新生成样式；预览只支持 CSS 属性。' : 'Save literal classes to regenerate Tailwind styles; preview is for CSS properties.');
     selected.style.setProperty($("#property").value, $("#value").value);
   });
 $("#save").onclick = () =>
   run(async () => {
     const rule = rules[Number($("#rule").value)];
     if (!rule) throw new Error("Select an editable rule");
-    const v = await api("save", {
+    const v = await api(rule.component ? "component" : "save", {
       page: page.file,
       ...rule,
+      value: $("#value").value,
       before: state.css[rule.file],
       changes: [{ property: $("#property").value, value: $("#value").value }],
     });
